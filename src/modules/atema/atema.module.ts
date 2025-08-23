@@ -11,6 +11,8 @@ import {LinguaController} from "./infra/controllers/lingua.controller";
 import {LinguaEntity} from "./infra/database/typeorm/entities/lingua.entity";
 import {TaxonomiaController} from "./infra/controllers/taxonomia.controller";
 import {TaxonomiaEntity} from "./infra/database/typeorm/entities/taxonomia.entity";
+import {UserController} from "./infra/controllers/user.controller";
+import {UserEntity} from "./infra/database/typeorm/entities/user.entity";
 
 @Module({
   imports: [
@@ -20,7 +22,8 @@ import {TaxonomiaEntity} from "./infra/database/typeorm/entities/taxonomia.entit
       ElementoEntity,
       EtimologiaEntity,
       LinguaEntity,
-      TaxonomiaEntity
+      TaxonomiaEntity,
+      UserEntity
     ])
   ],
   controllers: [
@@ -28,7 +31,8 @@ import {TaxonomiaEntity} from "./infra/database/typeorm/entities/taxonomia.entit
     ElementoController,
     EtimologiaController,
     LinguaController,
-    TaxonomiaController
+    TaxonomiaController,
+    UserController
   ],
   providers: [],
   exports: []
