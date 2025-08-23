@@ -5,13 +5,31 @@ import {AtemaController} from "./infra/controllers/atema.controller";
 import {AtemaEntity} from "./infra/database/typeorm/entities/atema.entity";
 import {ElementoController} from "./infra/controllers/elemento.controller";
 import {ElementoEntity} from "./infra/database/typeorm/entities/elemento.entity";
+import {EtimologiaEntity} from "./infra/database/typeorm/entities/etimologia.entity";
+import {EtimologiaController} from "./infra/controllers/etimologia.controller";
+import {LinguaController} from "./infra/controllers/lingua.controller";
+import {LinguaEntity} from "./infra/database/typeorm/entities/lingua.entity";
+import {TaxonomiaController} from "./infra/controllers/taxonomia.controller";
+import {TaxonomiaEntity} from "./infra/database/typeorm/entities/taxonomia.entity";
 
 @Module({
   imports: [
     HttpModule,
-    TypeOrmModule.forFeature([AtemaEntity, ElementoEntity])
+    TypeOrmModule.forFeature([
+      AtemaEntity,
+      ElementoEntity,
+      EtimologiaEntity,
+      LinguaEntity,
+      TaxonomiaEntity
+    ])
   ],
-  controllers: [AtemaController, ElementoController],
+  controllers: [
+    AtemaController,
+    ElementoController,
+    EtimologiaController,
+    LinguaController,
+    TaxonomiaController
+  ],
   providers: [],
   exports: []
 })
