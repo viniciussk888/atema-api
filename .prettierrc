@@ -1,0 +1,8 @@
+singleQuote: false
+bracketSpacing: false
+trailingComma: "none"
+overrides:
+  - files: "*.json.hbs"
+    options:
+      singleQuote: false
+      parser: json

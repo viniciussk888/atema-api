@@ -1,0 +1,28 @@
+{
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "overrides": [],
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "rules": {
+    "semi": [2, "always"],
+    "@typescript-eslint/semi": [2, "always"],
+    "@typescript-eslint/no-explicit-any": [
+      "warn",
+      {
+        "ignoreRestArgs": true
+      }
+    ],
+    "comma-dangle": ["error", "never"]
+  },
+  "ignorePatterns": [
+    "coverage/**/*",
+    "dist/**/*",
+    "jest.config.js",
+    "newrelic.js"
+  ]
+}
