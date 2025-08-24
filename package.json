@@ -32,6 +32,7 @@
   "author": "Alberto Rocha",
   "license": "MIT",
   "dependencies": {
+    "@nestjs-modules/mailer": "^2.0.2",
     "@nestjs/axios": "^3.0.2",
     "@nestjs/class-transformer": "^0.4.0",
     "@nestjs/class-validator": "^0.13.4",
@@ -50,6 +51,7 @@
     "class-validator": "^0.14.1",
     "multer": "^2.0.2",
     "nest-winston": "^1.10.0",
+    "nodemailer": "^7.0.5",
     "passport-jwt": "^4.0.1",
     "pg": "^8.16.3",
     "reflect-metadata": "^0.2.2",

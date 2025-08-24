@@ -7,6 +7,7 @@ import {AtemaModule} from "./modules/atema/atema.module";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {JwtModule} from "@nestjs/jwt";
 import {AuthModule} from "./common/auth/auth.module";
+import {MailerModule} from "@nestjs-modules/mailer";
 
 @Module({
   imports: [
@@ -27,6 +28,20 @@ import {AuthModule} from "./common/auth/auth.module";
       global: true,
       secret: process.env.JWT_SECRET,
       signOptions: {expiresIn: "24h"}
+    }),
+    MailerModule.forRoot({
+      transport: {
+        host: process.env.MAIL_HOST,
+        port: Number(process.env.MAIL_PORT) || 587,
+        secure: false,
+        auth: {
+          user: process.env.MAIL_USER,
+          pass: process.env.MAIL_PASS
+        }
+      },
+      defaults: {
+        from: process.env.MAIL_FROM
+      }
     }),
     HealthcheckModule,
     AtemaModule,

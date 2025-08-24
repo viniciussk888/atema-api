@@ -18,6 +18,7 @@ import {AuthModule} from "../../common/auth/auth.module";
 import {RelateController} from "./infra/controllers/relate.controller";
 import {PostController} from "./infra/controllers/post.controller";
 import {PostEntity} from "./infra/database/typeorm/entities/post.entity";
+import {PasswordRecoveryController} from "./infra/controllers/password-recovery.controller";
 
 @Module({
   imports: [
@@ -42,7 +43,8 @@ import {PostEntity} from "./infra/database/typeorm/entities/post.entity";
     UserController,
     SessionController,
     RelateController,
-    PostController
+    PostController,
+    PasswordRecoveryController
   ],
   providers: [],
   exports: []
