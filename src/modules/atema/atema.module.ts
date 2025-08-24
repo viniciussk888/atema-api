@@ -16,6 +16,8 @@ import {UserEntity} from "./infra/database/typeorm/entities/user.entity";
 import {SessionController} from "./infra/controllers/session.controller";
 import {AuthModule} from "../../common/auth/auth.module";
 import {RelateController} from "./infra/controllers/relate.controller";
+import {PostController} from "./infra/controllers/post.controller";
+import {PostEntity} from "./infra/database/typeorm/entities/post.entity";
 
 @Module({
   imports: [
@@ -27,7 +29,8 @@ import {RelateController} from "./infra/controllers/relate.controller";
       EtimologiaEntity,
       LinguaEntity,
       TaxonomiaEntity,
-      UserEntity
+      UserEntity,
+      PostEntity
     ])
   ],
   controllers: [
@@ -38,7 +41,8 @@ import {RelateController} from "./infra/controllers/relate.controller";
     TaxonomiaController,
     UserController,
     SessionController,
-    RelateController
+    RelateController,
+    PostController
   ],
   providers: [],
   exports: []
