@@ -7,13 +7,15 @@ import {
   Body,
   HttpStatus,
   Logger,
-  NotFoundException
+  NotFoundException,
+  UseGuards
 } from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {LinguaEntity} from "../database/typeorm/entities/lingua.entity";
 import {CreateLinguaDto} from "../../domain/dto/create-lingua.dto";
+import {JwtAuthGuard} from "../../../../common/auth/jwt-auth.guard";
 
 @ApiTags("Lingua")
 @Controller("lingua")
@@ -31,6 +33,7 @@ export class LinguaController {
     description: "Lista de línguas retornada com sucesso",
     type: [LinguaEntity]
   })
+  @UseGuards(JwtAuthGuard)
   @Get()
   async index(): Promise<LinguaEntity[]> {
     this.logger.log("GET /lingua");

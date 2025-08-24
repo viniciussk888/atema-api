@@ -6,6 +6,7 @@ import {HealthcheckModule} from "./modules/healthcheck/healthcheck.module";
 import {AtemaModule} from "./modules/atema/atema.module";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {JwtModule} from "@nestjs/jwt";
+import {AuthModule} from "./common/auth/auth.module";
 
 @Module({
   imports: [
@@ -23,10 +24,13 @@ import {JwtModule} from "@nestjs/jwt";
       }
     }),
     JwtModule.register({
-      global: true
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: {expiresIn: "24h"}
     }),
     HealthcheckModule,
     AtemaModule,
+    AuthModule,
     WinstonModule.forRoot(winstonConfig)
   ]
 })

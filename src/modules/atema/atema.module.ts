@@ -13,10 +13,13 @@ import {TaxonomiaController} from "./infra/controllers/taxonomia.controller";
 import {TaxonomiaEntity} from "./infra/database/typeorm/entities/taxonomia.entity";
 import {UserController} from "./infra/controllers/user.controller";
 import {UserEntity} from "./infra/database/typeorm/entities/user.entity";
+import {SessionController} from "./infra/controllers/session.controller";
+import {AuthModule} from "../../common/auth/auth.module";
 
 @Module({
   imports: [
     HttpModule,
+    AuthModule,
     TypeOrmModule.forFeature([
       AtemaEntity,
       ElementoEntity,
@@ -32,7 +35,8 @@ import {UserEntity} from "./infra/database/typeorm/entities/user.entity";
     EtimologiaController,
     LinguaController,
     TaxonomiaController,
-    UserController
+    UserController,
+    SessionController
   ],
   providers: [],
   exports: []
