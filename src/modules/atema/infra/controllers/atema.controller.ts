@@ -9,7 +9,8 @@ import {
   HttpStatus,
   Logger,
   NotFoundException,
-  UseGuards
+  UseGuards,
+  HttpException
 } from "@nestjs/common";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Repository} from "typeorm";
@@ -18,6 +19,7 @@ import {AtemaEntity} from "../database/typeorm/entities/atema.entity";
 import {CreateAtemaDto} from "../../domain/dto/create-atema.dto";
 import {UpdateAtemaDto} from "../../domain/dto/update-atema.dto";
 import {JwtAuthGuard} from "../../../../common/auth/jwt-auth.guard";
+import {FilterAtemaDto} from "../../domain/dto/filter-atema.dto";
 
 @ApiTags("Atema")
 @Controller("atema")
@@ -108,5 +110,48 @@ export class AtemaController {
       throw new NotFoundException(`Atema com id ${id} não encontrado`);
     }
     await this.atemaRepository.remove(atema);
+  }
+
+  @ApiOperation({
+    summary: "Filtrar Atemas por mesorregião, microrregião ou município"
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "Atemas filtrados com sucesso",
+    type: FilterAtemaDto
+  })
+  @UseGuards(JwtAuthGuard)
+  @Post("filter")
+  async filter(
+    @Body("mesorregiao") mesorregiao?: string,
+    @Body("microrregiao") microrregiao?: string,
+    @Body("municipio") municipio?: string
+  ): Promise<AtemaEntity[]> {
+    this.logger.log(
+      `POST /atema/filter - body: ${JSON.stringify({
+        mesorregiao,
+        microrregiao,
+        municipio
+      })}`
+    );
+
+    if (municipio) {
+      return this.atemaRepository.find({
+        where: {municipio}
+      });
+    } else if (microrregiao) {
+      return this.atemaRepository.find({
+        where: {microrregiao}
+      });
+    } else if (mesorregiao) {
+      return this.atemaRepository.find({
+        where: {mesorregiao}
+      });
+    } else {
+      throw new HttpException(
+        "É necessário informar mesorregiao, microrregiao ou municipio",
+        HttpStatus.BAD_REQUEST
+      );
+    }
   }
 }
