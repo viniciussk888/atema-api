@@ -8,7 +8,8 @@ import {
   Body,
   HttpStatus,
   Logger,
-  NotFoundException
+  NotFoundException,
+  UseGuards
 } from "@nestjs/common";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Repository} from "typeorm";
@@ -16,6 +17,7 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {AtemaEntity} from "../database/typeorm/entities/atema.entity";
 import {CreateAtemaDto} from "../../domain/dto/create-atema.dto";
 import {UpdateAtemaDto} from "../../domain/dto/update-atema.dto";
+import {JwtAuthGuard} from "../../../../common/auth/jwt-auth.guard";
 
 @ApiTags("Atema")
 @Controller("atema")
@@ -33,6 +35,7 @@ export class AtemaController {
     description: "Lista de Atemas retornada com sucesso",
     type: [AtemaEntity]
   })
+  @UseGuards(JwtAuthGuard)
   @Get()
   async index(): Promise<AtemaEntity[]> {
     this.logger.log("GET /atema");
@@ -45,6 +48,7 @@ export class AtemaController {
     description: "Atema criado com sucesso",
     type: AtemaEntity
   })
+  @UseGuards(JwtAuthGuard)
   @Post()
   async store(@Body() data: CreateAtemaDto): Promise<AtemaEntity> {
     this.logger.log("POST /atema");
@@ -58,6 +62,7 @@ export class AtemaController {
     description: "Atema encontrado",
     type: AtemaEntity
   })
+  @UseGuards(JwtAuthGuard)
   @Get(":id")
   async show(@Param("id") id: string): Promise<AtemaEntity> {
     this.logger.log(`GET /atema/${id}`);
@@ -74,6 +79,7 @@ export class AtemaController {
     description: "Atema atualizado com sucesso",
     type: AtemaEntity
   })
+  @UseGuards(JwtAuthGuard)
   @Put(":id")
   async update(
     @Param("id") id: string,
@@ -93,6 +99,7 @@ export class AtemaController {
     status: HttpStatus.NO_CONTENT,
     description: "Atema deletado com sucesso"
   })
+  @UseGuards(JwtAuthGuard)
   @Delete(":id")
   async destroy(@Param("id") id: string): Promise<void> {
     this.logger.log(`DELETE /atema/${id}`);

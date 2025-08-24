@@ -7,13 +7,15 @@ import {
   Body,
   HttpStatus,
   Logger,
-  NotFoundException
+  NotFoundException,
+  UseGuards
 } from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {TaxonomiaEntity} from "../database/typeorm/entities/taxonomia.entity";
 import {CreateTaxonomiaDto} from "../../domain/dto/create-taxonomia.dto";
+import {JwtAuthGuard} from "../../../../common/auth/jwt-auth.guard";
 
 @ApiTags("Taxonomia")
 @Controller("taxonomia")
@@ -31,6 +33,7 @@ export class TaxonomiaController {
     description: "Lista de taxonomias retornada com sucesso",
     type: [TaxonomiaEntity]
   })
+  @UseGuards(JwtAuthGuard)
   @Get()
   async index(): Promise<TaxonomiaEntity[]> {
     this.logger.log("GET /taxonomia");
@@ -43,6 +46,7 @@ export class TaxonomiaController {
     description: "Taxonomia criada com sucesso",
     type: TaxonomiaEntity
   })
+  @UseGuards(JwtAuthGuard)
   @Post()
   async store(@Body() data: CreateTaxonomiaDto): Promise<TaxonomiaEntity> {
     this.logger.log("POST /taxonomia");
@@ -55,6 +59,7 @@ export class TaxonomiaController {
     status: HttpStatus.NO_CONTENT,
     description: "Taxonomia deletada com sucesso"
   })
+  @UseGuards(JwtAuthGuard)
   @Delete(":id")
   async destroy(@Param("id") id: string): Promise<void> {
     this.logger.log(`DELETE /taxonomia/${id}`);

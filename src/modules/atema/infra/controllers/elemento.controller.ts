@@ -6,13 +6,15 @@ import {
   Param,
   Body,
   NotFoundException,
-  HttpStatus
+  HttpStatus,
+  UseGuards
 } from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
 import {ElementoEntity} from "../../infra/database/typeorm/entities/elemento.entity";
 import {CreateElementoDto} from "../../domain/dto/create-elemento.dto";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {JwtAuthGuard} from "../../../../common/auth/jwt-auth.guard";
 
 @ApiTags("Elemento")
 @Controller("elemento")
@@ -28,6 +30,7 @@ export class ElementoController {
     description: "Lista de Elementos retornada com sucesso",
     type: [ElementoEntity]
   })
+  @UseGuards(JwtAuthGuard)
   @Get()
   async index() {
     return await this.elementoRepository.find();
@@ -39,6 +42,7 @@ export class ElementoController {
     description: "Elemento criado com sucesso",
     type: CreateElementoDto
   })
+  @UseGuards(JwtAuthGuard)
   @Post()
   async store(@Body() data: CreateElementoDto) {
     const elemento = this.elementoRepository.create(data);
@@ -50,6 +54,7 @@ export class ElementoController {
     status: HttpStatus.OK,
     description: "Elemento deletado com sucesso"
   })
+  @UseGuards(JwtAuthGuard)
   @Delete(":id")
   async destroy(@Param("id") id: number) {
     const elemento = await this.elementoRepository.findOne({where: {id}});

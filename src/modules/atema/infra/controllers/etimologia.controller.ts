@@ -6,13 +6,15 @@ import {
   Param,
   Body,
   NotFoundException,
-  HttpStatus
+  HttpStatus,
+  UseGuards
 } from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
 import {EtimologiaEntity} from "../../infra/database/typeorm/entities/etimologia.entity";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {CreateEtimologiaDto} from "../../domain/dto/create-etimologia.dto";
+import {JwtAuthGuard} from "../../../../common/auth/jwt-auth.guard";
 
 @ApiTags("Etimologias")
 @Controller("etimologia")
@@ -28,6 +30,7 @@ export class EtimologiaController {
     description: "Lista de Etimologias retornada com sucesso",
     type: [EtimologiaEntity]
   })
+  @UseGuards(JwtAuthGuard)
   @Get()
   async index() {
     return await this.etimologiaRepository.find();
@@ -39,6 +42,7 @@ export class EtimologiaController {
     description: "Etimologia criado com sucesso",
     type: CreateEtimologiaDto
   })
+  @UseGuards(JwtAuthGuard)
   @Post()
   async store(@Body() data: CreateEtimologiaDto) {
     const Etimologia = this.etimologiaRepository.create(data);
@@ -50,6 +54,7 @@ export class EtimologiaController {
     status: HttpStatus.OK,
     description: "Etimologia deletado com sucesso"
   })
+  @UseGuards(JwtAuthGuard)
   @Delete(":id")
   async destroy(@Param("id") id: number) {
     const Etimologia = await this.etimologiaRepository.findOne({where: {id}});

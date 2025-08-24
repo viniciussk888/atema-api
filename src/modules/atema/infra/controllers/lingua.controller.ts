@@ -46,6 +46,7 @@ export class LinguaController {
     description: "Língua criada com sucesso",
     type: LinguaEntity
   })
+  @UseGuards(JwtAuthGuard)
   @Post()
   async store(@Body() data: CreateLinguaDto): Promise<LinguaEntity> {
     this.logger.log("POST /lingua");
@@ -58,6 +59,7 @@ export class LinguaController {
     status: HttpStatus.NO_CONTENT,
     description: "Língua deletada com sucesso"
   })
+  @UseGuards(JwtAuthGuard)
   @Delete(":id")
   async destroy(@Param("id") id: string): Promise<void> {
     this.logger.log(`DELETE /lingua/${id}`);

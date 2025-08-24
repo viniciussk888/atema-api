@@ -8,7 +8,8 @@ import {
   HttpStatus,
   Logger,
   NotFoundException,
-  ConflictException
+  ConflictException,
+  UseGuards
 } from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
@@ -16,6 +17,7 @@ import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {UserEntity} from "../database/typeorm/entities/user.entity";
 import {CreateUserDto} from "../../domain/dto/create-user.dto";
 import * as bcrypt from "bcrypt";
+import {JwtAuthGuard} from "../../../../common/auth/jwt-auth.guard";
 
 @ApiTags("User")
 @Controller("user")
@@ -33,6 +35,7 @@ export class UserController {
     description: "Lista de usuários retornada com sucesso",
     type: [UserEntity]
   })
+  @UseGuards(JwtAuthGuard)
   @Get()
   async index(): Promise<UserEntity[]> {
     this.logger.log("GET /user");
@@ -45,6 +48,7 @@ export class UserController {
     description: "Usuário criado com sucesso",
     type: UserEntity
   })
+  @UseGuards(JwtAuthGuard)
   @Post()
   async store(@Body() data: CreateUserDto): Promise<UserEntity> {
     this.logger.log("POST /user");
@@ -78,6 +82,7 @@ export class UserController {
     status: HttpStatus.NO_CONTENT,
     description: "Usuário deletado com sucesso"
   })
+  @UseGuards(JwtAuthGuard)
   @Delete(":id")
   async destroy(@Param("id") id: string): Promise<void> {
     this.logger.log(`DELETE /user/${id}`);
