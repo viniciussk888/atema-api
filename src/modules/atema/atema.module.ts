@@ -15,6 +15,7 @@ import {UserController} from "./infra/controllers/user.controller";
 import {UserEntity} from "./infra/database/typeorm/entities/user.entity";
 import {SessionController} from "./infra/controllers/session.controller";
 import {AuthModule} from "../../common/auth/auth.module";
+import {RelateController} from "./infra/controllers/relate.controller";
 
 @Module({
   imports: [
@@ -36,7 +37,8 @@ import {AuthModule} from "../../common/auth/auth.module";
     LinguaController,
     TaxonomiaController,
     UserController,
-    SessionController
+    SessionController,
+    RelateController
   ],
   providers: [],
   exports: []
