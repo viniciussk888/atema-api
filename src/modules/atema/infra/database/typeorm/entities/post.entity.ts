@@ -22,6 +22,10 @@ export class PostEntity {
   content?: string;
 
   @ApiProperty()
+  @Column({type: "varchar", nullable: false})
+  author?: string;
+
+  @ApiProperty()
   @Column({type: "varchar", length: 255, nullable: true})
   image?: string; // aqui vai armazenar o nome do arquivo ou a URL
 

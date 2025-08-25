@@ -37,7 +37,7 @@ export class PostController {
     const posts = await this.postRepository.find();
     return posts.map((post) => ({
       ...post,
-      image_url: post.image
+      image: post.image
         ? `${req.protocol}://${req.get("host")}/files/${post.image}`
         : null
     }));
