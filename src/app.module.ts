@@ -47,7 +47,10 @@ import {join} from "path";
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, "..", "files"), // ou o caminho correto
-      serveRoot: "/files" // prefixo da URL
+      serveRoot: "/files", // prefixo da URL
+      serveStaticOptions: {
+        index: false // 🔥 importante
+      }
     }),
     HealthcheckModule,
     AtemaModule,
