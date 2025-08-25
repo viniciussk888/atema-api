@@ -17,6 +17,7 @@ import {PostEntity} from "../database/typeorm/entities/post.entity";
 import * as path from "path";
 import {FastifyRequest} from "fastify";
 import fs from "fs/promises";
+import {supabase} from "../../../../common/supabase.client";
 
 @ApiTags("Posts")
 @Controller("posts")
@@ -45,26 +46,49 @@ export class PostController {
   @Post("file")
   async store(@Req() req: FastifyRequest) {
     try {
-      const data = await req.file();
+      // Receber o arquivo enviado
+      const file = await req.file();
 
-      if (!data) {
+      if (!file) {
         throw new BadRequestException("É necessário enviar uma imagem!");
       }
 
-      const buffer = await data.toBuffer();
-      const fileExt = path.extname(data.filename);
-      const fileName = `${Date.now()}${fileExt}`;
-      const filePath = `./files/${fileName}`;
+      // Converter para buffer
+      const buffer = await file.toBuffer();
 
-      const fs = await import("fs/promises");
-      await fs.writeFile(filePath, buffer);
+      // Criar nome único para a imagem
+      const fileExt = path.extname(file.filename);
+      const fileName = `${Date.now()}${fileExt}`;
+
+      // Enviar para o bucket 'atema'
+      const {error: uploadError} = await supabase.storage
+        .from("atema")
+        .upload(fileName, buffer, {
+          contentType: file.mimetype
+        });
+
+      if (uploadError) {
+        console.error(uploadError);
+        throw new InternalServerErrorException(
+          "Erro ao enviar a imagem para o Supabase!"
+        );
+      }
+
+      // Gerar URL pública (assumindo que o bucket é público)
+      const {data} = supabase.storage.from("atema").getPublicUrl(fileName);
+
+      if (data.publicUrl === null) {
+        throw new InternalServerErrorException(
+          "Erro ao gerar a URL da imagem!"
+        );
+      }
 
       return {
-        image: `${req.protocol}://${req.hostname}/files/${fileName}`
+        image: data.publicUrl
       };
     } catch (error) {
       console.error(error);
-      throw new InternalServerErrorException("Erro ao salvar o post!");
+      throw new InternalServerErrorException("Erro ao salvar a imagem!");
     }
   }
 
