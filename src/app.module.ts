@@ -8,6 +8,8 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {JwtModule} from "@nestjs/jwt";
 import {AuthModule} from "./common/auth/auth.module";
 import {MailerModule} from "@nestjs-modules/mailer";
+import {ServeStaticModule} from "@nestjs/serve-static";
+import {join} from "path";
 
 @Module({
   imports: [
@@ -42,6 +44,10 @@ import {MailerModule} from "@nestjs-modules/mailer";
       defaults: {
         from: process.env.MAIL_FROM
       }
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, "..", "files"), // ou o caminho correto
+      serveRoot: "/files" // prefixo da URL
     }),
     HealthcheckModule,
     AtemaModule,
