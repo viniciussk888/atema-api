@@ -5,6 +5,7 @@ import {FastifyAdapter, NestFastifyApplication} from "@nestjs/platform-fastify";
 import {AppModule} from "./app.module";
 import {setupSwagger} from "./common/swagger.config";
 import winstonTransports from "./common/winston.logger";
+import fastifyMultipart from "@fastify/multipart";
 
 const port: number = parseInt(process.env.APP_PORT || "3000", 10);
 
@@ -23,6 +24,8 @@ async function bootstrap() {
   app.enableCors({
     origin: "*"
   });
+
+  await app.register(fastifyMultipart);
 
   setupSwagger(app);
 
