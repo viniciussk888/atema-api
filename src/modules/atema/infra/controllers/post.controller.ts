@@ -16,7 +16,6 @@ import {ApiTags, ApiOperation, ApiResponse} from "@nestjs/swagger";
 import {PostEntity} from "../database/typeorm/entities/post.entity";
 import * as path from "path";
 import {FastifyRequest} from "fastify";
-import fs from "fs/promises";
 import {supabase} from "../../../../common/supabase.client";
 
 @ApiTags("Posts")
@@ -132,19 +131,19 @@ export class PostController {
     // delete image file if exists
     if (post.image) {
       try {
-        // Pega somente o nome do arquivo da URL
-        const fileName = path.basename(post.image);
-
-        // Caminho absoluto da pasta /files na raiz do projeto
-        const filePath = path.resolve(
-          __dirname,
-          "../../../../../../files",
-          fileName
-        );
-
-        // Deleta o arquivo
-        await fs.unlink(filePath);
-        console.log("Imagem deletada com sucesso:", filePath);
+        //delete from supabase
+        const imageName = post.image.split("/").pop();
+        if (imageName) {
+          const {error} = await supabase.storage
+            .from("atema")
+            .remove([imageName]);
+          if (error) {
+            console.error(
+              "Não foi possível deletar a imagem do Supabase:",
+              error
+            );
+          }
+        }
       } catch (error) {
         console.warn("Não foi possível deletar a imagem:", error);
       }
